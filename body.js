@@ -1,16 +1,21 @@
 let vehicles = [];
 let isLoading = false;
 
+document.addEventListener('DOMContentLoaded', function () {
+  loadvehicle();
+});
+
+
 async function searchvehicle() {
   try {
     setLoading(true);
-    const data = await apiGetVeiculo("Veiculo");
+    const data = await apiGetVeiculo('Veiculo');
     vehicles = data;
-    renderTable();
+    renderTableVehicle();
   } catch (error) {
-    console.error("Erro ao buscar veículos", error);
-    showToast("Erro", "Não foi possível carregar a lista de veículos", "error"),
-      renderTable();
+    console.error('Erro ao buscar veículos', error);
+    showToast('Erro', 'Não foi possível carregar a lista de veículos', 'error'),
+      renderTableVehicle();
   } finally {
     setLoading(false);
   }
@@ -18,7 +23,7 @@ async function searchvehicle() {
 
 async function loadvehicle() {
   await searchvehicle();
-  renderTable();
+  renderTableVehicle();
   renderSelect();
 }
 
@@ -36,18 +41,18 @@ function renderSelect() {
 
 function renderTableVehicle() {
   //renderizarTabelasDeVeiculos
-  const tbody = document.getElementById("vehicles-tbody"); //Criar t-body no html
-  const emptyState = document.getElementById("empty-state"); // criar empty-state
-  const tableContainer = document.getElementById("table-container"); //criar table-container
+  const tbody = document.getElementById('vehicles-tbody'); //Criar t-body no html
+  const emptyState = document.getElementById('empty-state'); // criar empty-state
+  const tableContainer = document.getElementById('table-container'); //criar table-container
 
   if (vehicles.lenght === 0) {
-    tableContainer.classList.add("hidden");
-    emptyState.classList.remove("hidden");
+    tableContainer.classList.add('hidden');
+    emptyState.classList.remove('hidden');
     return;
   }
 
-  tableContainer.classList.remove("hidden");
-  emptyState.classList.add("hidden");
+  tableContainer.classList.remove('hidden');
+  emptyState.classList.add('hidden');
   //criar html para ser alterado pelo javascript
   tbody.innerHTML = vehicles.data
     .map(
@@ -84,52 +89,52 @@ function renderTableVehicle() {
 
 function setLoading(loading) {
   isLoading = loading;
-  const loadingElem = getElementById("loading"); // criar index loading
-  const tableContainer = getElementById("table-container"); //criar table-container
+  const loadingElem = document.getElementById('loading'); // criar index loading
+  const tableContainer = document.getElementById('table-container'); //criar table-container
 
   if (loading) {
-    loadingElem.classList.remove("hidden");
-    tableContainer.classList.add("hidden");
+    loadingElem.classList.remove('hidden');
+    tableContainer.classList.add('hidden');
   } else {
-    loadingElem.classList.add("hidden");
+    loadingElem.classList.add('hidden');
     if (vehicles.length > 0) {
-      tableContainer.classList.remove("hidden");
+      tableContainer.classList.remove('hidden');
     }
   }
 }
 
 // Sistema de Toast
-function showToast(title, message, type = "info") {
-  const toast = document.getElementById("toast"); // criar toast
-  const toastIcon = document.getElementById("toast-icon"); //criar toast-icon
-  const toastTitle = document.getElementById("toast-title"); //criar toast-tittle
-  const toastMessage = document.getElementById("toast-message"); //criar toast-message
+function showToast(title, message, type = 'info') {
+  const toast = document.getElementById('toast'); // criar toast
+  const toastIcon = document.getElementById('toast-icon'); //criar toast-icon
+  const toastTitle = document.getElementById('toast-title'); //criar toast-tittle
+  const toastMessage = document.getElementById('toast-message'); //criar toast-message
 
   // Configurar ícone e cores baseado no tipo
-  let iconName = "info";
+  let iconName = 'info';
   let iconColor = "text-blue-500"; //colocar cor padrao locamobi
 
   switch (type) {
-    case "success":
-      iconName = "check-circle";
-      iconColor = "text-green-500";
+    case 'success':
+      iconName = 'check-circle';
+      iconColor = 'text-green-500';
       break;
-    case "error":
-      iconName = "x-circle";
-      iconColor = "text-red-500";
+    case 'error':
+      iconName = 'x-circle';
+      iconColor = 'text-red-500';
       break;
-    case "warning":
-      iconName = "alert-triangle";
-      iconColor = "text-yellow-500";
+    case 'warning':
+      iconName = 'alert-triangle';
+      iconColor = 'text-yellow-500';
       break;
   }
 
-  toastIcon.setAttribute("data-lucide", iconName);
+  toastIcon.setAttribute('data-lucide', iconName);
   toastIcon.className = `h-5 w-5 ${iconColor}`;
   toastTitle.textContent = title;
   toastMessage.textContent = message;
 
-  toast.classList.remove("hidden");
+  toast.classList.remove('hidden');
   lucide.createIcons();
 
   // Auto-hide após 5 segundos
